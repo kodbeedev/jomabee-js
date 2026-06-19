@@ -5,7 +5,7 @@
     "keywords": ["jomabee", "kodbee", "payment", "bangladesh", "bkash", "nagad", "rocket", "upay", "sdk"],
     "homepage": "https://kodbee.com",
     "license": "MIT",
-    "author": "Kodbee <support@kodbee.com> (https://kodbee.com)",
+    "author": "Kodbee <info@kodbee.com> (https://kodbee.com)",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/kodbeedev/jomabee-js.git"
