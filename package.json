@@ -1,0 +1,38 @@
+{
+    "name": "@kodbee/jomabee",
+    "version": "1.0.0",
+    "description": "Official JavaScript/TypeScript client for the Jomabee payment API by Kodbee.",
+    "keywords": ["jomabee", "kodbee", "payment", "bangladesh", "bkash", "nagad", "rocket", "upay", "sdk"],
+    "homepage": "https://kodbee.com",
+    "license": "MIT",
+    "author": "Kodbee <support@kodbee.com> (https://kodbee.com)",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kodbeedev/jomabee-js.git"
+    },
+    "bugs": {
+        "url": "https://github.com/kodbeedev/jomabee-js/issues"
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "files": ["dist", "README.md", "LICENSE"],
+    "engines": {
+        "node": ">=18"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "test": "npm run build && node --test test/*.test.mjs",
+        "prepublishOnly": "npm run build"
+    },
+    "devDependencies": {
+        "typescript": "^5.4.0",
+        "@types/node": "^20.0.0"
+    }
+}

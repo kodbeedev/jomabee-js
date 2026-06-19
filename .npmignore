@@ -1,0 +1,7 @@
+src/
+test/
+tsconfig.json
+.gitignore
+*.log
+.idea/
+.vscode/
