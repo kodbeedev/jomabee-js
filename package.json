@@ -1,17 +1,17 @@
 {
-    "name": "@kodbee/jomabee",
+    "name": "@kodbee/paydiver",
     "version": "1.0.0",
-    "description": "Official JavaScript/TypeScript client for the Jomabee payment API by Kodbee.",
-    "keywords": ["jomabee", "kodbee", "payment", "bangladesh", "bkash", "nagad", "rocket", "upay", "sdk"],
+    "description": "Official JavaScript/TypeScript client for the Paydiver payment API by Kodbee.",
+    "keywords": ["paydiver", "kodbee", "payment", "bangladesh", "bkash", "nagad", "rocket", "upay", "sdk"],
     "homepage": "https://kodbee.com",
     "license": "MIT",
     "author": "Kodbee <info@kodbee.com> (https://kodbee.com)",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/kodbeedev/jomabee-js.git"
+        "url": "git+https://github.com/kodbeedev/paydiver-js.git"
     },
     "bugs": {
-        "url": "https://github.com/kodbeedev/jomabee-js/issues"
+        "url": "https://github.com/kodbeedev/paydiver-js/issues"
     },
     "type": "module",
     "main": "./dist/index.js",

@@ -1,7 +1,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 
-/** Options for constructing a {@link Jomabee} client. */
-export interface JomabeeOptions {
+/** Options for constructing a {@link Paydiver} client. */
+export interface PaydiverOptions {
   apiKey: string;
   /** Required for createPayment / verifyPayment. */
   secretKey?: string;
@@ -42,22 +42,22 @@ export interface WebhookEvent {
 }
 
 /** Base error for all client failures. */
-export class JomabeeError extends Error {}
+export class PaydiverError extends Error {}
 
 /** Thrown when the API returns an error response. */
-export class JomabeeApiError extends JomabeeError {
+export class PaydiverApiError extends PaydiverError {
   constructor(
     message: string,
     public readonly code: string = "error",
     public readonly statusCode: number = 0,
   ) {
     super(message);
-    this.name = "JomabeeApiError";
+    this.name = "PaydiverApiError";
   }
 }
 
-/** Official JavaScript/TypeScript client for the Jomabee payment API by Kodbee. */
-export class Jomabee {
+/** Official JavaScript/TypeScript client for the Paydiver payment API by Kodbee. */
+export class Paydiver {
   static readonly VERSION = "1.0.0";
 
   private readonly apiKey: string;
@@ -65,9 +65,9 @@ export class Jomabee {
   private readonly baseUrl: string;
   private readonly timeoutMs: number;
 
-  constructor(opts: JomabeeOptions) {
+  constructor(opts: PaydiverOptions) {
     if (!opts.apiKey) {
-      throw new JomabeeError("apiKey is required.");
+      throw new PaydiverError("apiKey is required.");
     }
     this.apiKey = opts.apiKey;
     this.secretKey = opts.secretKey || undefined;
@@ -118,7 +118,7 @@ export class Jomabee {
 
   private requireSecret(method: string): void {
     if (!this.secretKey) {
-      throw new JomabeeError(`Jomabee.${method}() requires a secretKey.`);
+      throw new PaydiverError(`Paydiver.${method}() requires a secretKey.`);
     }
   }
 
@@ -131,7 +131,7 @@ export class Jomabee {
     const headers: Record<string, string> = {
       Accept: "application/json",
       "X-API-Key": this.apiKey,
-      "User-Agent": `jomabee-js/${Jomabee.VERSION}`,
+      "User-Agent": `paydiver-js/${Paydiver.VERSION}`,
     };
     if (withSecret && this.secretKey) headers["X-Secret-Key"] = this.secretKey;
 
@@ -149,7 +149,7 @@ export class Jomabee {
     try {
       res = await fetch(this.baseUrl + path, init);
     } catch (err) {
-      throw new JomabeeError(`HTTP request failed: ${(err as Error).message}`);
+      throw new PaydiverError(`HTTP request failed: ${(err as Error).message}`);
     } finally {
       clearTimeout(timer);
     }
@@ -159,10 +159,10 @@ export class Jomabee {
       | null;
 
     if (!json) {
-      throw new JomabeeApiError("Unexpected non-JSON response.", "invalid_response", res.status);
+      throw new PaydiverApiError("Unexpected non-JSON response.", "invalid_response", res.status);
     }
     if (!res.ok || json.success === false) {
-      throw new JomabeeApiError(
+      throw new PaydiverApiError(
         json.error?.message ?? "Request failed.",
         json.error?.code ?? "error",
         res.status,
@@ -173,10 +173,10 @@ export class Jomabee {
 }
 
 /** Header carrying the webhook HMAC signature. */
-export const SIGNATURE_HEADER = "X-Jomabee-Signature";
+export const SIGNATURE_HEADER = "X-Paydiver-Signature";
 
 /**
- * Verify a Jomabee webhook by recomputing the HMAC-SHA256 of the raw request
+ * Verify a Paydiver webhook by recomputing the HMAC-SHA256 of the raw request
  * body. Pass the exact raw body string received (do not re-serialize).
  */
 export function verifyWebhookSignature(
@@ -196,7 +196,7 @@ export function verifyWebhookSignature(
  */
 export function parseWebhook(rawBody: string, signature: string, secret: string): WebhookEvent {
   if (!verifyWebhookSignature(rawBody, signature, secret)) {
-    throw new JomabeeError("Webhook signature verification failed.");
+    throw new PaydiverError("Webhook signature verification failed.");
   }
   return JSON.parse(rawBody) as WebhookEvent;
 }

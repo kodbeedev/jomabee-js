@@ -1,13 +1,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
-import { verifyWebhookSignature, parseWebhook, Jomabee } from "../dist/index.js";
+import { verifyWebhookSignature, parseWebhook, Paydiver } from "../dist/index.js";
 
 const SECRET = "whsec_test_secret";
 const sign = (body) => createHmac("sha256", SECRET).update(body, "utf8").digest("hex");
 
 test("valid signature passes", () => {
-  const body = JSON.stringify({ event: "payment.verified", invoice_id: "JOMB-1", amount: 500 });
+  const body = JSON.stringify({ event: "payment.verified", invoice_id: "PAYD-1", amount: 500 });
   assert.equal(verifyWebhookSignature(body, sign(body), SECRET), true);
 });
 
@@ -25,9 +25,9 @@ test("empty signature or secret fails", () => {
 });
 
 test("parseWebhook returns event on valid signature", () => {
-  const body = JSON.stringify({ event: "payment.verified", invoice_id: "JOMB-X" });
+  const body = JSON.stringify({ event: "payment.verified", invoice_id: "PAYD-X" });
   const event = parseWebhook(body, sign(body), SECRET);
-  assert.equal(event.invoice_id, "JOMB-X");
+  assert.equal(event.invoice_id, "PAYD-X");
 });
 
 test("parseWebhook throws on bad signature", () => {
@@ -35,10 +35,10 @@ test("parseWebhook throws on bad signature", () => {
 });
 
 test("client requires apiKey", () => {
-  assert.throws(() => new Jomabee({ apiKey: "" }));
+  assert.throws(() => new Paydiver({ apiKey: "" }));
 });
 
 test("client requires secret for createPayment", () => {
-  const c = new Jomabee({ apiKey: "k" });
+  const c = new Paydiver({ apiKey: "k" });
   assert.throws(() => c.createPayment({ amount: 1, product_name: "x" }));
 });
